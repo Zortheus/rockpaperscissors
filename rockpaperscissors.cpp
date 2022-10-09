@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 using namespace std;
 
 #define RESET   "\033[0m"
@@ -17,11 +18,45 @@ int scissors = 3;
 int playerNum, cpuNum;
 string playerHand, cpuHand;
 int score = 0;
+bool login = true;
+
+string drawRock = R"(
+     _______
+ ---'   ____)
+       (_____)
+       (_____)
+       (____)
+ ---.__(___)
+)";
+
+string drawPaper = R"(
+      _______
+ ---'    ____)____
+            ______)
+           _______)
+          _______)
+ ---.__________)
+)";
+
+string drawScissors = R"(
+     _______
+ ---'   ____)____
+           ______)
+        __________)
+       (____)
+ ---.__(___)
+)";
+
+void Draw(string draw){
+    cout << draw << endl;
+}
 
 int main();
 
 void game(){
     system("clear");
+    cout << "Let's play Rock Paper Scissors!" << "\n\n";
+    sleep(1);
     cout << "Enter 1 for " << BOLDCYAN << "ROCK" << RESET << endl;
     cout << "Enter 2 for " << BOLDMAGENTA << "PAPER" << RESET << endl;
     cout << "ENTER 3 for " << BOLDYELLOW << "SCISSORS" << RESET << endl;
@@ -30,30 +65,64 @@ void game(){
     cin >> playerNum;
     
     cpuNum = (rand() % 3) + 1;
+    sleep(1);
+    system("clear");
+
+    cout << BOLDWHITE << "ROCK, PAPER, SCISSORS, SHOOT!" << RESET << endl;
+    sleep(2);
 
     if (playerNum == 1){
-        playerHand = "Rock";
+        cout << "\n You threw " << BOLDWHITE << "ROCK!" << RESET << endl;
+        sleep(1);
+        cout << BOLDCYAN;
+        Draw(drawRock);
+        cout << RESET;
     } else if (playerNum == 2){
-        playerHand = "Paper";
+        cout << "\n You threw " << BOLDWHITE << "PAPER!" << RESET << endl;
+        sleep(1);
+        cout << BOLDMAGENTA;
+        Draw(drawPaper);
+        cout << RESET;
     } else if (playerNum == 3){
-        playerHand = "Scissors";
+        cout << "\n You threw " << BOLDWHITE << "SCISSORS!" << RESET << endl;
+        sleep(1);
+        cout << BOLDYELLOW;
+        Draw(drawScissors);
+        cout << RESET;
     }
+
+    sleep(1);
+    cout << endl;
 
     if (cpuNum == 1){
-        cpuHand = "Rock";
+        cout << "\n Computer threw " << BOLDWHITE << "ROCK!" << RESET << endl;
+        sleep(1);
+        cout << BOLDCYAN;
+        Draw(drawRock);
+        cout << RESET;
     } else if (cpuNum == 2){
-        cpuHand = "Paper";
+        cout << "\n Computer threw " << BOLDWHITE << "PAPER!" << RESET << endl;
+        sleep(1);
+        cout << BOLDMAGENTA;
+        Draw(drawPaper);
+        cout << RESET;
     } else if (cpuNum == 3){
-        cpuHand = "Scissors";
+        cout << "\n Computer threw " << BOLDWHITE << "SCISSORS!" << RESET << endl;
+        sleep(1);
+        cout << BOLDYELLOW;
+        Draw(drawScissors);
+        cout << RESET;
     }
 
-    cout << endl;
-    cout << "You threw " << BOLDWHITE << playerHand << RESET << " and the computer threw " << BOLDWHITE << cpuHand << RESET << ".\n" << endl;
+    sleep(1);
+    cout << "\n\n";
 
     if (playerNum == cpuNum) {
         cout << "Game was a draw!" << endl;    
     } else if (playerNum == 1 && cpuNum == 2) {
         cout << "Rock loses to paper. " << BOLDRED << "You lose!" << RESET << endl;
+        if (score != 0)
+            cout << BOLDRED << "\nScore reset!" << RESET << endl;
         score = 0;
     } else if (playerNum == 1 && cpuNum == 3) {
         cout << "Rock beats scissors. " << BOLDGREEN << "You win!" << RESET << endl;
@@ -63,46 +132,67 @@ void game(){
         score++;
     } else if (playerNum == 2 && cpuNum == 3){
         cout << "Paper loses to scissors. " << BOLDRED << "You lose!" << RESET << endl;
+        if (score != 0)
+            cout << BOLDRED << "\nScore reset!" << RESET << endl;
         score = 0;
     } else if (playerNum == 3 && cpuNum == 1){
         cout << "Scissors loses to rock. " << BOLDRED << "You lose!" << RESET << endl;
+        if (score != 0)
+            cout << BOLDRED << "\nScore reset!" << RESET << endl;
         score = 0;
     } else if (playerNum == 3 && cpuNum == 2){
         cout << "Scissors beats paper. " << BOLDGREEN << "You win!" << RESET << endl;
         score++;
     }
 
-    cout << endl;
-    cout << "Wins in a row : " << BOLDYELLOW << score << RESET << endl;
-    cout << endl;
+    sleep(4);
+    cout << "\n\n";
+
+    system("clear");
+
+    if (score == 3){
+        cout << BOLDGREEN << R"(
+__     ______  _    _  __          _______ _   _ _ 
+\ \   / / __ \| |  | | \ \        / /_   _| \ | | |
+ \ \_/ / |  | | |  | |  \ \  /\  / /  | | |  \| | |
+  \   /| |  | | |  | |   \ \/  \/ /   | | | . ` | |
+   | | | |__| | |__| |    \  /\  /   _| |_| |\  |_|
+   |_|  \____/ \____/      \/  \/   |_____|_| \_(_)
+    )" << RESET;
+        sleep(5);
+        score = 0;
+        system("clear");
+    }
+
     main();
 }
 
 int main (){
 
-    cout << R"(
-    
-     *******      *******      ********
-    /**////**    /**////**    **//////
-    /**   /**    /**   /**   /**
-    /*******     /*******    /*********
-    /**///**     /**////     ////////**
-    /**  //**  **/**       **       /** **
-    /**   //**/**/**      /** ******** /**
-    //     // // //       // ////////  //
-    )";
+    if (login == true)
+        system("clear");
+
+    login = false;
+    cout << BOLDGREEN << R"(
+ _  _  _    _     _  _ _   __ ____ __ __ _  _  __ 
+|_)/ \/ |/ |_)/\ |_)|_|_) (_ /  | (_ (_ / \|_)(_  
+| \\_/\_|\ | /--\|  |_| \ __)\__|___)__)\_/| \__)
+
+    )" << RESET;
+    cout << "\n               SCORE 3 TO WIN!";
 
     int menu;
+    
     cout << endl;
-    cout << "___________________________________________\n";
-    cout << "###                                     ###\n";
-    cout << "###   WELCOME TO ROCK PAPER SCISSORS!   ###\n";
-    cout << "###                                     ###\n";
-    cout << "###   ENTER 1 to " << BOLDGREEN << "PLAY" << RESET << "                   ###\n";
-    cout << "###   ENTER 2 to " << BOLDRED << "EXIT" << RESET << "                   ###\n";
-    cout << "###_____________________________________###\n";
+    cout << "_________________________________________________\n";
+    cout << "###                                           ###\n";
+    cout << "###   ENTER 1 to " << BOLDGREEN << "PLAY" << RESET << "                         ###\n";
+    cout << "###   ENTER 2 to " << BOLDRED << "EXIT" << RESET << "                         ###\n";
+    cout << "###                                           ###\n";
+    cout << "###   Score: " << BOLDYELLOW << score << RESET << "                                ###\n";
+    cout << "###___________________________________________###\n";
     cout << endl;
-    cout << "ENTER : ";
+    cout << "      ENTER : ";
     cin >> menu;
 
     switch(menu){
@@ -115,8 +205,7 @@ int main (){
             game();
             break;
     }
-            
 
-
+    system("clear");        
     return 0;
 }
